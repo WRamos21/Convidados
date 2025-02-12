@@ -1,10 +1,7 @@
-package com.example.convidados
+package com.example.convidados.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,6 +10,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.example.convidados.R
 import com.example.convidados.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -40,7 +38,8 @@ class MainActivity : AppCompatActivity() {
         mas para que possamos navegar para essa fragment (renomeada para fragment_all_guests)
         temos que modificar o id em mobile_navigation também, lembrando que aqui na MainActivity
         nos referenciamos as fragments em AppBarConfigure portando é necessario atualizar a referencia.
-        Continua em 3.0 em GuestFormActivity
+        Continua em 3.0 em GuestFormActivity "Criando a activity de formulario"
+        Continua em 4.0 em GuesFormViewModel "Criando repo"
          */
         binding.appBarMain.fab.setOnClickListener { view ->
             startActivity(Intent(applicationContext, GuestFormActivity::class.java))
