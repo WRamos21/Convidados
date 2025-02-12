@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         mas para que possamos navegar para essa fragment (renomeada para fragment_all_guests)
         temos que modificar o id em mobile_navigation também, lembrando que aqui na MainActivity
         nos referenciamos as fragments em AppBarConfigure portando é necessario atualizar a referencia.
-
+        Continua em 3.0 em GuestFormActivity
          */
         binding.appBarMain.fab.setOnClickListener { view ->
             startActivity(Intent(applicationContext, GuestFormActivity::class.java))
