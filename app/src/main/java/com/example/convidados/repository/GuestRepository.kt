@@ -10,8 +10,7 @@ o Companion Object serve para acessar metodos sem precisar instanciar a classe>
 A função getInstance retorna uma intancia do repositorio, mesmo que eu chame essa função mais de 2 vez
 o GuestRepository nunca vai ser instanciado mais de uma vez, isso por que sempre que já estiver inicializado
 retornamos a instancia deste mesmo repo.
-
-
+Continua em 5.0 em GuestDataBase
  */
 
 class GuestRepository private constructor(){
