@@ -1,5 +1,8 @@
 package com.example.convidados.repository
 
+import android.content.Context
+import com.example.convidados.GuestModel
+
 
 /* 4.1 Criando repo
 - Quando vou intanciar um banco de dados dentro da classe, toda vez que ela for intanciada o banco de
@@ -11,20 +14,29 @@ A função getInstance retorna uma intancia do repositorio, mesmo que eu chame e
 o GuestRepository nunca vai ser instanciado mais de uma vez, isso por que sempre que já estiver inicializado
 retornamos a instancia deste mesmo repo.
 Continua em 5.0 em GuestDataBase
+    6.0 Conectando pacotes
+- Agora podemos instanciar o DataBase, mas ele precisa de um contexto, podemos passar o contexto ao construtor
+com isso getInstance também vai precisar receber um context no construtor
+continua em 6.1 em GuestFormViewModel
+
  */
 
-class GuestRepository private constructor(){
+class GuestRepository private constructor(context: Context){
+
+    private val guestDataBase = GuestDataBase(context)
 
     //Singleton
     companion object{
-
         private lateinit var repository: GuestRepository
 
-        fun getInstance(): GuestRepository {
+        fun getInstance(context: Context): GuestRepository {
             if(!Companion::repository.isInitialized){
-                repository = GuestRepository()
+                repository = GuestRepository(context)
             }
-            return GuestRepository()
+            return repository
         }
+    }
+
+    fun insert() {
     }
 }

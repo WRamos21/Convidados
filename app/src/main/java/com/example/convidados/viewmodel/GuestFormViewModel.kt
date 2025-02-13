@@ -1,5 +1,7 @@
 package com.example.convidados.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import com.example.convidados.repository.GuestRepository
 
@@ -7,11 +9,21 @@ import com.example.convidados.repository.GuestRepository
 /* 4.0 Criando repo
 - A primeira coisa a ser feita é a criação do GuestRpository
 Continuar em 4.1 em GuestRepository
+    6.1 Conectando pacotes
+- Agora a ViewModel também precisa receber o contexto para poder chamar o metodo getInstance, mas nós
+não conseguimos acessar o construtor da viewModel, pois quem faz essa itermediação é
+ViewModelProvider(this).get(GuestFormViewModel::class.java)
+desta forma o ideal é usar a interface AndroidViewModel, no lugar de ViewModel. Passando o parametro
+Applicantion (que faz o papel do contexto, dado pela viewModelProvider) no construtor da classe
+GuestFormViewModel
+- Como transitar os dados da activity para viewmodel e da viewmodel para repository. Posso criar um
+meotodo Save na viewModel e para retornar o ideal é retornar um classe com todas as caracteriticas
+necessarias, por isso criamos o GuestModel, o modelo é quem tem os dados.
  */
 
-class GuestFormViewModel: ViewModel() {
+class GuestFormViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = GuestRepository.getInstance()
+    private val repository = GuestRepository.getInstance(application)
 
 
 }
