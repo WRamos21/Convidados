@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.convidados.viewmodel.GuestFormViewModel
 import com.example.convidados.R
 import com.example.convidados.databinding.ActivityGuestFormBinding
+import com.example.convidados.model.GuestModel
 
 /* 3.0 Criando a activity de formulario
 Ja criei o layout desta activiy GuestForm, agoro crio faço a configuração do biding, além de instanciar
@@ -38,10 +39,17 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+
+    /* 7.1 Chamando a inserção
+    - Coletamos os dados a activity e enviamos para viewModel para se conectar com o repository
+     */
     override fun onClick(view: View) {
         if (view.id == R.id.button_save) {
-            //view.save(GuestModel(10, "x, false"))
+            val name = binding.editName.text.toString()
+            val presence = binding.radioPresent.isChecked
+            val model = GuestModel(0, name, presence)
 
+            viewModel.insert(model)
         }
     }
 }
