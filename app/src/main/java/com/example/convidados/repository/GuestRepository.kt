@@ -2,6 +2,7 @@ package com.example.convidados.repository
 
 import android.content.ContentValues
 import android.content.Context
+import com.example.convidados.constants.DataBaseConstants
 import com.example.convidados.model.GuestModel
 
 
@@ -27,6 +28,7 @@ além disso db.isert também pede um values, da classe contentValues que carrega
 nele podemos usar put para dizer quais os dados que serão levados.
 continua em 7.1 em GuestFormActivity em onClik
 -podemos ainda se prevenir das exceções utilizando o try catch
+    8.0 Criação da Classe de Constantes
  */
 
 class GuestRepository private constructor(context: Context){
@@ -51,10 +53,10 @@ class GuestRepository private constructor(context: Context){
             val presence = if (guest.presence) 1 else 0
 
             val values = ContentValues()
-            values.put("name", guest.name)
-            values.put("presence", presence)
+            values.put(DataBaseConstants.GUEST.COLUMNS.NAME, guest.name)
+            values.put(DataBaseConstants.GUEST.COLUMNS.PRESENCE, presence)
 
-            db.insert("Guest", null, values)
+            db.insert(DataBaseConstants.GUEST.TABLE_NAME, null, values)
             return true
         } catch (e: Exception){
             return false
