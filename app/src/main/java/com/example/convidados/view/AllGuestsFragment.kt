@@ -10,33 +10,45 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.convidados.databinding.FragmentAllGuestsBinding
 import com.example.convidados.viewmodel.AllGuestsViewModel
 
+/* 12.0 Chamando listagem através da viewmodel
+- Vamos criar um metodos para oservar a viewModel chamado observe, mas para isso a viewModel precisa
+ter uma função para receber os convidados, por isso foi criado o metodo getAll nessa classe
+
+ */
+
+
 class AllGuestsFragment : Fragment() {
 
-private var _binding: FragmentAllGuestsBinding? = null
-  // This property is only valid between onCreateView and
-  // onDestroyView.
-  private val binding get() = _binding!!
+    private var _binding: FragmentAllGuestsBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var viewModel: AllGuestsViewModel
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    val ViewModel =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+         viewModel =
             ViewModelProvider(this).get(AllGuestsViewModel::class.java)
 
-    _binding = FragmentAllGuestsBinding.inflate(inflater, container, false)
-    val root: View = binding.root
+        _binding = FragmentAllGuestsBinding.inflate(inflater, container, false)
+        val root: View = binding.root
 
-    val textView: TextView = binding.textHome
-    ViewModel.text.observe(viewLifecycleOwner) {
-      textView.text = it
+        viewModel.getAll()
+
+        observe()
+
+        return root
     }
-    return root
-  }
 
-override fun onDestroyView() {
+    override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun observe(){
+        viewModel.guests.observe(viewLifecycleOwner) {
+        }
+
     }
 }

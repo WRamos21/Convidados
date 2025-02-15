@@ -122,6 +122,7 @@ class GuestRepository private constructor(context: Context) {
     - Recebo todos os dados que quero e crio um modelo para receber estes dados, no final preciso
     fechar o cursor
     - A função precisará retornar uma lista de GuestModel (todos os convidados do filtro)
+     Continua em 12.0 em allGuestsFragment
      */
     fun getAll(): List<GuestModel> {
 
