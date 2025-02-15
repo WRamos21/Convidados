@@ -89,7 +89,6 @@ class GuestRepository private constructor(context: Context) {
     }
 
 
-
     /* 10.0 Remoção do convidado
     - DataBase.Delete utilzia o nome da tabela, a seleção where e os argumentos
      */
@@ -105,5 +104,61 @@ class GuestRepository private constructor(context: Context) {
         } catch (e: Exception) {
             return false
         }
+    }
+
+    /* 11.0 Listagem sem filtro
+    - Query é uma instrução SQL, pedindo as instruções que devem ser seguidas
+    table: String,                 Nome da tabela
+    columns: Array<String>?,       Array com nome das colunas que você quer retornar (null retorna todas)
+    selection: String?,            A cláusula WHERE (null retorna todos os registros)
+    selectionArgs: Array<String>?, Argumentos para substituir os ? no selection
+    groupBy: String?,             Cláusula GROUP BY
+    having: String?,              Cláusula HAVING
+    orderBy: String?              Cláusula ORDER BY
+    - Como queremos todos os convidados sem filtro e sem agrupamento podemos apenas passar todas as
+    colunas e o todas as configurações extra com nulas
+    - Query retorna um cursor, que aponta para o começo da tabela e pode andar linha por linha, pode
+    nulo caso não tenha nada na tabela
+    - Recebo todos os dados que quero e crio um modelo para receber estes dados, no final preciso
+    fechar o cursor
+    - A função precisará retornar uma lista de GuestModel (todos os convidados do filtro)
+     */
+    fun getAll(): List<GuestModel> {
+
+        val list = mutableListOf<GuestModel>()
+        try {
+            val db = guestDataBase.readableDatabase
+            val selection = arrayOf(
+                DataBaseConstants.GUEST.COLUMNS.ID,
+                DataBaseConstants.GUEST.COLUMNS.NAME,
+                DataBaseConstants.GUEST.COLUMNS.PRESENCE
+            )
+
+            val cursor = db.query(
+                DataBaseConstants.GUEST.TABLE_NAME,
+                selection,
+                null,
+                null,
+                null,
+                null,
+                null
+            )
+
+            if (cursor != null && cursor.count > 0) {
+                while (cursor.moveToNext()) {
+                    val id =
+                        cursor.getInt(cursor.getColumnIndex(DataBaseConstants.GUEST.COLUMNS.ID))
+                    val presence =
+                        cursor.getInt(cursor.getColumnIndex(DataBaseConstants.GUEST.COLUMNS.PRESENCE))
+                    val name =
+                        cursor.getString(cursor.getColumnIndex(DataBaseConstants.GUEST.COLUMNS.NAME))
+                    list.add(GuestModel(id, name, presence == 1))
+                }
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            return list
+        }
+        return list
     }
 }
