@@ -31,16 +31,16 @@ continua em 7.1 em GuestFormActivity em onClik
     8.0 Criação da Classe de Constantes
  */
 
-class GuestRepository private constructor(context: Context){
+class GuestRepository private constructor(context: Context) {
 
     private val guestDataBase = GuestDataBase(context)
 
     //Singleton
-    companion object{
+    companion object {
         private lateinit var repository: GuestRepository
 
         fun getInstance(context: Context): GuestRepository {
-            if(!Companion::repository.isInitialized){
+            if (!Companion::repository.isInitialized) {
                 repository = GuestRepository(context)
             }
             return repository
@@ -58,7 +58,7 @@ class GuestRepository private constructor(context: Context){
 
             db.insert(DataBaseConstants.GUEST.TABLE_NAME, null, values)
             return true
-        } catch (e: Exception){
+        } catch (e: Exception) {
             return false
         }
     }
@@ -69,7 +69,7 @@ class GuestRepository private constructor(context: Context){
     e os argumentos que devem ser capturados são todos aqueles que possuem o id do nosso Guest (convidado)
      */
 
-    fun update(guest: GuestModel): Boolean{
+    fun update(guest: GuestModel): Boolean {
         try {
             val db = guestDataBase.writableDatabase
             val presence = if (guest.presence) 1 else 0
@@ -88,4 +88,22 @@ class GuestRepository private constructor(context: Context){
         }
     }
 
+
+
+    /* 10.0 Remoção do convidado
+    - DataBase.Delete utilzia o nome da tabela, a seleção where e os argumentos
+     */
+    fun delete(id: Int): Boolean {
+        try {
+            val db = guestDataBase.writableDatabase
+
+            val selection = DataBaseConstants.GUEST.COLUMNS.ID + " = ?"
+            val args = arrayOf(id.toString())
+
+            db.delete(DataBaseConstants.GUEST.TABLE_NAME, selection, args)
+            return true
+        } catch (e: Exception) {
+            return false
+        }
+    }
 }
