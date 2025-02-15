@@ -62,4 +62,30 @@ class GuestRepository private constructor(context: Context){
             return false
         }
     }
+
+    /* 9.0 Atualização no banco de dados
+    dataBase.Update pede noma da tabela, valores (contentValues), clausa where (filtro) e os valores
+    (argumentos) da where. Neste caso queremos atualizar os dados onde a seleção é a coluna ID
+    e os argumentos que devem ser capturados são todos aqueles que possuem o id do nosso Guest (convidado)
+     */
+
+    fun update(guest: GuestModel): Boolean{
+        try {
+            val db = guestDataBase.writableDatabase
+            val presence = if (guest.presence) 1 else 0
+
+            val values = ContentValues()
+            values.put(DataBaseConstants.GUEST.COLUMNS.NAME, guest.name)
+            values.put(DataBaseConstants.GUEST.COLUMNS.PRESENCE, presence)
+
+            val selection = DataBaseConstants.GUEST.COLUMNS.ID + " = ?"
+            val args = arrayOf(guest.id.toString())
+
+            db.update(DataBaseConstants.GUEST.TABLE_NAME, values, selection, args)
+            return true
+        } catch (e: Exception) {
+            return false
+        }
+    }
+
 }
