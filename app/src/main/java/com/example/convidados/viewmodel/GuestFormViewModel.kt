@@ -33,10 +33,12 @@ class GuestFormViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun save(guest: GuestModel){
         if (guest.id == 0) {
+            repository.insert(guest)
+            println("BBBBBBBBBBB")
+        } else {
             repository.update(guest)
-        } else repository.insert(guest)
+        }
     }
-
 
 
     fun get(id: Int) {
