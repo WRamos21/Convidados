@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.convidados.databinding.FragmentAllGuestsBinding
 import com.example.convidados.view.adapter.GuestsAdapter
+import com.example.convidados.view.listener.OnGuestListener
 import com.example.convidados.viewmodel.AllGuestsViewModel
 
 /* 12.0 Chamando listagem através da viewmodel
@@ -25,6 +27,14 @@ ter uma função para receber os convidados, por isso foi criado o metodo getAll
 O adapter é a intermediação entre os dados e o layout.
 - Dentro de onObserve temos a variavel publica imutavel que contém a lista de GuestModels, de forma
 que quando passamos guests update, estamos atualizando os dados presentes no Adapter.
+    15.0 Eventos de Listagem
+- Vamos fazer uma instancia anonima do OnGuestListener. Uma instância anônima em Kotlin é um objeto
+criado sem uma classe explicitamente nomeada. É uma forma de criar objetos únicos que implementam
+uma interface ou herdam de uma classe diretamente no ponto em que são necessários, sem precisar
+declarar uma classe separada.
+Ao invés de criar uma nova classe para implementar uma interface ou herdar de uma classe, você usa o
+object em Kotlin para criar uma instância no mesmo local. O objeto anônimo não tem nome, mas pode
+ter seu comportamento personalizado diretamente no local onde é criado.
  */
 
 
@@ -44,6 +54,20 @@ class AllGuestsFragment : Fragment() {
 
         // Adapter
         binding.recyclerAllGuests.adapter = adapter
+
+        val listener = object : OnGuestListener{
+            override fun onClik(id: Int) {
+                Toast.makeText(context, "clicado", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onDelete(id: Int) {
+                viewModel.delete(id)
+                viewModel.getAll()
+            }
+
+        }
+
+        adapter.attachListener(listener)
 
         viewModel.getAll()
         observe()

@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.convidados.databinding.RowGuestBinding
 import com.example.convidados.model.GuestModel
+import com.example.convidados.view.listener.OnGuestListener
 import com.example.convidados.view.viewholder.GuestsViewHolder
 
 
@@ -29,15 +30,22 @@ do layout Row_Guests
 Configurar listeners e comportamentos para o item, Atualizar a aparência do item baseado no estado dos dados
 Como viewHolder é quem aramazena os elementos de interface, criamos um metodo "bind" para gerar ligação
 do elemento de interface com os dados, fazendo essa ligação a cada GuestModel
-
-
+    14.0 Entendendo a recyclerView
+- A recycler view cria views suficientes para o tamnho da tela e mais um pouco, sempre que um item
+desaparece da tela ela recicla o layout desse item para o proximo, por isso Create será chamado poucas
+vezes, enquanto Bind varias vezes.
+    15.0 Eventos de Listagem
+Aqui precismos passar listener para GuestsViewHolder, por isso criamos (attach) um metodo para que armazena
+dentro da classe um OnGuestListebner passado.
+Continua em allGuestsFragment 15.0 Eventos de Listagem
  */
 class GuestsAdapter : RecyclerView.Adapter<GuestsViewHolder>() {
     private var guestList: List<GuestModel> = listOf()
+    private lateinit var listener: OnGuestListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuestsViewHolder {
         val item = RowGuestBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return GuestsViewHolder(item)
+        return GuestsViewHolder(item, listener)
     }
 
     override fun onBindViewHolder(holder: GuestsViewHolder, position: Int) {
@@ -51,5 +59,9 @@ class GuestsAdapter : RecyclerView.Adapter<GuestsViewHolder>() {
     fun updateGuests(list: List<GuestModel>) {
         guestList = list
         notifyDataSetChanged() // Manda a ReciclyrView se atualizar
+    }
+
+    fun attachListener(guestListener: OnGuestListener) {
+        listener = guestListener
     }
 }
