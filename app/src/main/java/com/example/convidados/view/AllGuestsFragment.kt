@@ -23,6 +23,8 @@ ter uma função para receber os convidados, por isso foi criado o metodo getAll
  linearLayout
 - Definimos também o adapter, que é uma classe abstrata, por isso criamos a classe GuestsAdapter,
 O adapter é a intermediação entre os dados e o layout.
+- Dentro de onObserve temos a variavel publica imutavel que contém a lista de GuestModels, de forma
+que quando passamos guests update, estamos atualizando os dados presentes no Adapter.
  */
 
 
@@ -30,6 +32,7 @@ class AllGuestsFragment : Fragment() {
 
     private var _binding: FragmentAllGuestsBinding? = null
     private val binding get() = _binding!!
+    private val adapter = GuestsAdapter()
     private lateinit var viewModel: AllGuestsViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, b: Bundle?): View {
@@ -40,7 +43,7 @@ class AllGuestsFragment : Fragment() {
         binding.recyclerAllGuests.layoutManager = LinearLayoutManager(context)
 
         // Adapter
-        binding.recyclerAllGuests.adapter = GuestsAdapter()
+        binding.recyclerAllGuests.adapter = adapter
 
         viewModel.getAll()
         observe()
@@ -55,7 +58,7 @@ class AllGuestsFragment : Fragment() {
 
     private fun observe() {
         viewModel.guests.observe(viewLifecycleOwner) {
+            adapter.updateGuests(it)
         }
-
     }
 }
