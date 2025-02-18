@@ -5,19 +5,27 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.convidados.viewmodel.GuestFormViewModel
 import com.example.convidados.R
+import com.example.convidados.constants.DataBaseConstants
 import com.example.convidados.databinding.ActivityGuestFormBinding
 import com.example.convidados.model.GuestModel
 
 /* 3.0 Criando a activity de formulario
 Ja criei o layout desta activiy GuestForm, agoro crio faço a configuração do biding, além de instanciar
 o evento de click. Também crio a view model para está activity e faça a conexão entre elas.
+
+    18.0 Atualização de convidado
+- Em onCreate eu uso loadData para carregar os dados, esse metodo criado verifica se houve algum bundle
+enviado junto a criação da activity, para carregar os dados do usuario, por esse motivo é necessario
+criar a função get dentro da viewModel e no repository
  */
 class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityGuestFormBinding
     private lateinit var viewModel: GuestFormViewModel
+    private var guestId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +45,9 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
          */
         binding.radioConfirmation.check(R.id.radio_present)
 
+        observe()
+        loadData()
+
     }
 
 
@@ -47,9 +58,30 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
         if (view.id == R.id.button_save) {
             val name = binding.editName.text.toString()
             val presence = binding.radioPresent.isChecked
-            val model = GuestModel(0, name, presence)
+            val model = GuestModel(guestId, name, presence)
 
-            viewModel.insert(model)
+            viewModel.save(model)
+            //TODO temporario
+            finish()
+        }
+    }
+
+    private fun observe() {
+        viewModel.guest.observe(this, Observer {
+            binding.editName.setText(it.name)
+            if (it.presence) {
+                binding.radioPresent.isChecked = true
+            } else {
+                binding.radioAbsent.isChecked = false
+            }
+        })
+    }
+
+    private fun loadData() {
+        val bundle = intent.extras
+        if (bundle != null) {
+            val guestId = bundle.getInt(DataBaseConstants.GUEST.ID)
+            viewModel.get(guestId)
         }
     }
 }
