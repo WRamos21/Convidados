@@ -72,7 +72,7 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
             if (it.presence) {
                 binding.radioPresent.isChecked = true
             } else {
-                binding.radioAbsent.isChecked = false
+                binding.radioAbsent.isChecked = true
             }
         })
     }
