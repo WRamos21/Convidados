@@ -62,11 +62,13 @@ a classe seja abstrata
 - Vamo transferir o singleton do repository para o DataBase
 - synchronized impede que duas threads executem o mesmo codigo
 - Migration serve para atualizar o banco de dados
-- AllowMainTheredQueries permite ser carregado na thread main
+- AllowMainTheredQueries permite ser carregado na thread main, informando que é leve
  */
 
 @Database(entities = [GuestModel::class], version = 1)
 abstract class GuestDataBase() : RoomDatabase() {
+
+    abstract fun guestDAO(): GuestDAO
 
     companion object {
         private lateinit var INTANCE: GuestDataBase

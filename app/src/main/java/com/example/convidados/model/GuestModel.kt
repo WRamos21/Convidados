@@ -19,10 +19,10 @@ class GuestModel {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Int = 0
+    var id: Int = 0
 
     @ColumnInfo(name = "name")
-    val name: String = ""
+    var name: String = ""
 
     @ColumnInfo(name = "presence")
     var presence: Boolean = false

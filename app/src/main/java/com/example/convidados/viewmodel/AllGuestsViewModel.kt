@@ -23,7 +23,7 @@ podem modificar os dados diretamente, evitando bugs ou comportamento inesperado.
  */
 class AllGuestsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var repository = GuestRepository.getInstance(application.applicationContext)
+    private var repository = GuestRepository(application.applicationContext)
 
     private val listAllGuests = MutableLiveData<List<GuestModel>>()
     val guests: LiveData<List<GuestModel>> = listAllGuests
